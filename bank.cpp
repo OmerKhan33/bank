@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+// Base class for bank accounts
 class Account {
 public:
     explicit Account(double initialBalance) 
@@ -8,7 +9,8 @@ public:
         if (initialBalance < 0.0) 
         {
             balance = 0.0;
-            cerr << "Error: Initial balance cannot be negative. Set balance to 0.0." <<endl;
+            // Display an error message if initial balance is negative
+            cerr << "Error: Initial balance cannot be negative. Set balance to 0.0." << endl;
         } 
         else 
         {
@@ -18,6 +20,7 @@ public:
 
     void credit(double amount) 
     {
+        // Add the given amount to the account balance
         balance += amount;
     }
 
@@ -25,25 +28,29 @@ public:
     {
         if (amount <= balance) 
         {
+            // Subtract the given amount from the account balance
             balance -= amount;
             return true;
         } 
         else 
         {
-            cerr << "Debit amount exceeded account balance." <<endl;
+            // Display an error message if debit amount exceeds balance
+            cerr << "Debit amount exceeded account balance." << endl;
             return false;
         }
     }
 
     double getBalance() const 
     {
+        // Return the current account balance
         return balance;
     }
 
 private:
-    double balance;
+    double balance; // Data member to store account balance
 };
 
+// Derived class for savings accounts
 class SavingsAccount : public Account 
 {
 public:
@@ -52,13 +59,15 @@ public:
 
     double calculateInterest() const 
     {
+        // Calculate interest earned based on interest rate
         return getBalance() * interestRate / 100.0;
     }
 
 private:
-    double interestRate;
+    double interestRate; // Data member for interest rate
 };
 
+// Derived class for checking accounts
 class CheckingAccount : public Account 
 {
 public:
@@ -67,6 +76,7 @@ public:
 
     void credit(double amount)  
     {
+        // Adjust balance after deducting transaction fee
         Account::credit(amount - transactionFee);
     }
 
@@ -74,6 +84,7 @@ public:
     {
         if (Account::debit(amount)) 
         {
+            // Charge transaction fee for successful debit
             Account::debit(transactionFee);
             return true;
         }
@@ -81,7 +92,7 @@ public:
     }
 
 private:
-    double transactionFee;
+    double transactionFee; // Data member for transaction fee
 };
 
 int main() 
@@ -89,12 +100,13 @@ int main()
     // Example usage
     SavingsAccount savings(1000.0, 2.5); // Initial balance of $1000 and 2.5% interest rate
     savings.credit(savings.calculateInterest()); // Add interest
-    cout << "Savings account balance: $" << savings.getBalance() <<endl;
+    cout << "Savings account balance: $" << savings.getBalance() << endl;
 
     CheckingAccount checking(500.0, 1.0); // Initial balance of $500 and $1 transaction fee
     checking.credit(200.0); // Deposit $200
     checking.debit(100.0); // Withdraw $100
-    cout << "Checking account balance: $" << checking.getBalance() <<endl;
+    cout << "Checking account balance: $" << checking.getBalance() << endl;
 
     return 0;
 }
+
