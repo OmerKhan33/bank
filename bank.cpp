@@ -4,6 +4,7 @@ using namespace std;
 // Base class for bank accounts
 class Account {
 public:
+    //constructor
     explicit Account(double initialBalance) 
     {
         if (initialBalance < 0.0) 
